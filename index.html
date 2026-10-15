@@ -1,8 +1,535 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<title>Bee</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawfit | Pañoletas Premium para Mascotas</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-color: #0071e3;
+            --accent-hover: #0077ed;
+            --card-bg: #ffffff;
+            --glass-bg: rgba(251, 251, 253, 0.8);
+            --border-radius: 24px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            padding-top: 70px; /* Espacio para el navbar fijo */
+        }
+
+        /* Utilidades de texto */
+        .fw-semibold { font-weight: 600 !important; }
+        .text-accent { color: var(--accent-color); }
+
+        .navbar-glass {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            font-size: 1.5rem;
+        }
+
+        .hero-section {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-image-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            margin-top: 3rem;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Botones estilo Apple */
+        .btn-apple {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 980px;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-apple:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .btn-apple-outline {
+            background-color: transparent;
+            color: var(--accent-color);
+            border-radius: 980px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .btn-apple-outline:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            background-color: #f5f5f7;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Animaciones Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Offcanvas & Modal personalizados */
+        .offcanvas, .modal-content {
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            border: none;
+        }
+        .modal-content {
+            border-radius: var(--border-radius);
+        }
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+    </style>
 </head>
 <body>
-<h1>Hello World</h1>
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-glass">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-heptagon-fill text-accent me-1"></i> Pawfit
+            </a>
+            
+            <div class="d-flex align-items-center order-lg-last">
+                <button class="btn position-relative border-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    <i class="bi bi-bag fs-5"></i>
+                    <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="display: none;">
+                        0
+                    </span>
+                </button>
+                <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#coleccion">Colección</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#historia">Nuestra Historia</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero-section container reveal active">
+        <h1 class="hero-title">Estilo que deja huella.</h1>
+        <p class="hero-subtitle">Descubre pañoletas de diseño minimalista, creadas con algodón premium para el confort absoluto de tu mascota.</p>
+        <a href="#coleccion" class="btn btn-apple">Explorar colección</a>
+        
+        <div class="hero-image-wrapper mt-5 reveal">
+            <!-- Usamos una imagen de alta calidad simulada -->
+            <img src="https://images.unsplash.com/photo-1529429617124-95b109e86bb8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Perro elegante con pañoleta">
+        </div>
+    </section>
+
+    <section id="coleccion" class="container py-5 mt-5">
+        <div class="text-center mb-5 reveal">
+            <h2 class="display-5 fw-bold mb-4">Nuestros Diseños</h2>
+            <div class="d-flex justify-content-center gap-2 flex-wrap" id="filter-container">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="perro">Perros</button>
+                <button class="filter-btn" data-filter="gato">Gatos</button>
+                <span class="text-muted mx-2 align-self-center">|</span>
+                <button class="filter-btn" data-filter="S">Talla S</button>
+                <button class="filter-btn" data-filter="M">Talla M</button>
+                <button class="filter-btn" data-filter="L">Talla L</button>
+            </div>
+        </div>
+
+        <div class="row g-4" id="products-grid">
+            <!-- Los productos se inyectarán aquí con JavaScript -->
+        </div>
+    </section>
+
+    <div class="offcanvas offcanvas-end shadow" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel">Tu Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cart-items" class="flex-grow-1 overflow-auto">
+                <!-- Items del carrito -->
+                <div class="text-center text-muted mt-5" id="empty-cart-msg">
+                    <i class="bi bi-bag-x fs-1 d-block mb-3"></i>
+                    Tu carrito está vacío.
+                </div>
+            </div>
+            
+            <div class="border-top pt-3 mt-3">
+                <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
+                    <span>Total</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <button class="btn btn-apple w-100" id="btn-checkout" data-bs-toggle="modal" data-bs-target="#checkoutModal" disabled>
+                    Proceder al pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-2">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold fs-4">Finalizar Compra</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div id="checkout-form-container">
+                        <p class="text-muted small mb-4">Ingresa tus datos para completar el pedido de forma segura.</p>
+                        <form id="checkout-form">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Nombre Completo</label>
+                                <input type="text" class="form-control rounded-3 py-2" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Tarjeta de Crédito</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="bi bi-credit-card"></i></span>
+                                    <input type="text" class="form-control rounded-end-3 py-2" placeholder="0000 0000 0000 0000" required>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold">Vencimiento</label>
+                                    <input type="text" class="form-control rounded-3 py-2" placeholder="MM/YY" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold">CVC</label>
+                                    <input type="text" class="form-control rounded-3 py-2" placeholder="123" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-apple w-100 py-3">
+                                Pagar <span id="checkout-modal-total"></span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Mensaje de Éxito Oculto Inicialmente -->
+                    <div id="checkout-success" class="text-center py-5 d-none">
+                        <div class="text-success mb-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="fw-bold">¡Pago Exitoso!</h4>
+                        <p class="text-muted">Tu pedido ha sido procesado. Pawfit está preparando tu paquete con mucho amor.</p>
+                        <button type="button" class="btn btn-apple-outline mt-3" data-bs-dismiss="modal" onclick="clearCart()">Seguir comprando</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Datos de productos simulados
+        const products = [
+            { id: 1, name: "Midnight Blue", price: 24.99, target: "perro", size: "L", image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "Sunset Orange", price: 19.99, target: "gato", size: "S", image: "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "Classic Plaid", price: 22.50, target: "perro", size: "M", image: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "Floral Spring", price: 21.00, target: "gato", size: "S", image: "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "Urban Grey", price: 26.00, target: "perro", size: "L", image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "Ruby Red", price: 23.99, target: "perro", size: "M", image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+
+        // Elementos del DOM
+        const grid = document.getElementById('products-grid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const emptyCartMsg = document.getElementById('empty-cart-msg');
+        const cartBadge = document.getElementById('cart-badge');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const checkoutModalTotal = document.getElementById('checkout-modal-total');
+        const btnCheckout = document.getElementById('btn-checkout');
+
+        // Función para renderizar productos
+        function renderProducts() {
+            grid.innerHTML = '';
+            
+            const filteredProducts = products.filter(p => {
+                if (currentFilter === 'all') return true;
+                return p.target === currentFilter || p.size === currentFilter;
+            });
+
+            filteredProducts.forEach(p => {
+                const col = document.createElement('div');
+                col.className = 'col-12 col-md-6 col-lg-4 reveal active'; // 'active' for immediate render after load
+                col.innerHTML = `
+                    <div class="product-card">
+                        <img src="${p.image}" alt="${p.name}" class="product-image">
+                        <div class="d-flex justify-content-between align-items-start mt-auto">
+                            <div>
+                                <h3 class="product-title">${p.name}</h3>
+                                <p class="product-price">$${p.price.toFixed(2)} USD</p>
+                                <span class="badge bg-light text-dark border">Talla ${p.size}</span>
+                                <span class="badge bg-light text-dark border ms-1">${p.target.charAt(0).toUpperCase() + p.target.slice(1)}</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-apple-outline mt-4 w-100" onclick="addToCart(${p.id})">
+                            Añadir al Carrito
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(col);
+            });
+        }
+
+        // Lógica de Filtros
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remover clase activa de todos
+                filterBtns.forEach(b => b.classList.remove('active', 'fw-bold'));
+                // Añadir al clickeado
+                e.target.classList.add('active', 'fw-bold');
+                
+                currentFilter = e.target.getAttribute('data-filter');
+                renderProducts();
+            });
+        });
+
+        // Lógica del Carrito
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            
+            updateCartUI();
+            
+            // Opcional: Abrir offcanvas automáticamente al añadir
+            const offcanvasEl = document.getElementById('cartOffcanvas');
+            const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+            bsOffcanvas.show();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            // Actualizar Badge
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalItems > 0) {
+                cartBadge.style.display = 'block';
+                cartBadge.textContent = totalItems;
+                emptyCartMsg.style.display = 'none';
+                btnCheckout.disabled = false;
+            } else {
+                cartBadge.style.display = 'none';
+                emptyCartMsg.style.display = 'block';
+                btnCheckout.disabled = true;
+            }
+
+            // Renderizar Items
+            const itemsHtml = cart.filter(item => item.qty > 0).map(item => `
+                <div class="d-flex align-items-center mb-3 bg-light p-2 rounded-3">
+                    <img src="${item.image}" class="cart-item-img me-3">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-semibold">${item.name}</h6>
+                        <small class="text-muted">Talla ${item.size} | $${item.price.toFixed(2)}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold mb-1">x${item.qty}</div>
+                        <button class="btn btn-sm text-danger p-0" onclick="removeFromCart(${item.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Si hay items, eliminar el mensaje de vacío y poner la lista
+            if (cart.length > 0) {
+                cartItemsContainer.innerHTML = itemsHtml;
+            } else {
+                cartItemsContainer.innerHTML = '';
+                cartItemsContainer.appendChild(emptyCartMsg);
+            }
+
+            // Actualizar Total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const totalFormatted = `$${total.toFixed(2)}`;
+            cartTotalSpan.textContent = totalFormatted;
+            checkoutModalTotal.textContent = totalFormatted;
+        }
+
+        // Limpiar carrito tras compra
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+            // Resetear Modal para próxima vez
+            setTimeout(() => {
+                document.getElementById('checkout-form-container').classList.remove('d-none');
+                document.getElementById('checkout-success').classList.add('d-none');
+                document.getElementById('checkout-form').reset();
+            }, 500);
+        }
+
+        // Lógica Checkout (Simulado)
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Ocultar formulario, mostrar éxito
+            document.getElementById('checkout-form-container').classList.add('d-none');
+            document.getElementById('checkout-success').classList.remove('d-none');
+            
+            // Cerrar el offcanvas del carrito por detrás
+            const offcanvasEl = document.getElementById('cartOffcanvas');
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            if(bsOffcanvas) bsOffcanvas.hide();
+        });
+
+        function initScrollAnimations() {
+            const reveals = document.querySelectorAll('.reveal:not(.active)');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            initScrollAnimations();
+        });
+    </script>
 </body>
 </html>
